@@ -6,18 +6,6 @@ let TipoLeaderboard = "live_blitz";
 //   live_bullet,
 //   live_rapid,
 
-function crearTablaLeaderboard(objetoJugador) {
-  objetoJugador.forEach((elemento) => {
-    let fila = document.createElement("tr");
-
-    let ranking = document.createElement("th");
-    ranking.textContent(elemento);
-
-    fila.appendChild(ranking);
-  });
-  document.appendChild();
-}
-
 fetch(url)
   .then((respuesta) => respuesta.json())
   .then((datos) => {
@@ -28,10 +16,18 @@ fetch(url)
 
       let ranking = document.createElement("th");
       ranking.textContent = elemento.rank;
-   
-
+      ranking.style.width = "16px";
+      
       let nombre = document.createElement("td");
       nombre.textContent = elemento.name;
+
+      let contenedorBandera = document.createElement("td");
+      contenedorBandera.style.width = "16px";
+
+      let paisJugador = elemento.country.slice(34).toLowerCase();
+      let bandera = document.createElement("span");
+      bandera.classList.add(`fi`, `fi-${paisJugador}`);
+      contenedorBandera.appendChild(bandera);
 
       let rating = document.createElement("td");
       rating.textContent = elemento.score;
@@ -52,6 +48,7 @@ fetch(url)
       ).toFixed(2)}%`;
 
       fila.appendChild(ranking);
+      fila.appendChild(contenedorBandera);
       fila.appendChild(nombre);
       fila.appendChild(rating);
       fila.appendChild(totalPartidas);
@@ -62,6 +59,5 @@ fetch(url)
 
     console.log(datos[TipoLeaderboard]);
   })
-
 
   .catch((error) => console.error(error));
