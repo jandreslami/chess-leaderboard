@@ -17,14 +17,28 @@
       rel="stylesheet"
     />
     <link
-    href="node_modules\flag-icons\css\flag-icons.min.css"
-    rel="stylesheet"
-  />
-
+      href="node_modules\flag-icons\css\flag-icons.min.css"
+      rel="stylesheet"
+    />
   </head>
   <body>
+    <div class="container-fluid p-2">
+      <div class="row">
+        <div class="col">
+          <div class="form-floating">
+            <select class="form-select" id="tipo-juego" aria-label="Floating label select example">
+              <option selected value="1">Daily</option>
+              <option value="2">Two</option>
+              <option value="3">Three</option>
+            </select>
+            <label for="tipo-juego">Tipo de ranking</label>
+          </div>
+        </div>
+        <div class="col-9"></div>
+      </div>
+    </div>
     <div class="table-responsive">
-      <table class="table table-sm">
+      <table class="table table-sm table-hover">
         <thead>
           <tr>
             <th scope="col" style="width: 16px">#</th>
