@@ -23,7 +23,7 @@ const TEXTOS_A_MOSTRAR = {
 
 function popularTabla(arrayRanking, $elementoContenedorDeTabla) {
   let $fila = document.createElement("tr");
-  $fila.id = `rank-${arrayRanking.rank}`
+  $fila.id = `${arrayRanking.rank}`;
 
   let $ranking = document.createElement("th");
   $ranking.textContent = arrayRanking.rank;
@@ -75,7 +75,8 @@ function popularTabla(arrayRanking, $elementoContenedorDeTabla) {
   $elementoContenedorDeTabla.appendChild($fila);
 }
 
-function crearBandera(urlPaisJugador) { //devuelve un span HTML element que muestra la bandera con flag-icons
+function crearBandera(urlPaisJugador) {
+  //devuelve un span HTML element que muestra la bandera con flag-icons
   let paisJugador = urlPaisJugador.slice(34).toLowerCase();
   let $bandera = document.createElement("span");
   $bandera.classList.add(`fi`, `fi-${paisJugador}`);
@@ -112,7 +113,7 @@ fetch(URL_LEADERBOARD)
     $SELECTOR_TIPO_RANKING.onchange = function () {
       limpiarElementoHTML($CUERPO_TABLA);
       let opcionSeleccionada = $SELECTOR_TIPO_RANKING.value;
-      
+
       datos[opcionSeleccionada].forEach((arrayRanking) => {
         popularTabla(arrayRanking, $CUERPO_TABLA);
       });
@@ -124,36 +125,58 @@ $CUERPO_TABLA.onclick = function (event) {
   if (event.target.classList.contains("nombre")) {
     popularPerfil(event.target.id);
   }
+
+  function popularPerfil(username) {
+    fetch(`${URL_PERFIL_JUGADOR}${username}`)
+      .then((respuesta) => respuesta.json())
+      .then((datos) => {
+        if (datos.name === undefined) {
+          document.querySelector("#nombre-perfil").textContent = datos.username;
+        } else {
+          document.querySelector("#nombre-perfil").textContent = datos.name;
+          document.querySelector(
+            "#usuario-perfil"
+          ).textContent = `${datos.username}`;
+        }
+
+        let badgeJugador = document.createElement("span");
+
+        if (datos.title) {
+          badgeJugador.classList.add("badge", "bg-warning", "badge-sm");
+          badgeJugador.textContent = `${datos.title}`;
+          badgeJugador.classList.add("m-2");
+          document.querySelector("#nombre-perfil").prepend(badgeJugador);
+        }
+
+        let rankingDeJugadorClicado = event.srcElement.parentNode.id;
+        document
+          .querySelector("#nombre-perfil")
+          .prepend(`#${rankingDeJugadorClicado} -`);
+
+        let banderaDeJugadorClicado = crearBandera(datos.country);
+        banderaDeJugadorClicado.classList.add("m-2", "bandera-jugador");
+
+        document
+          .querySelector("#nombre-perfil")
+          .append(banderaDeJugadorClicado);
+
+        if (datos.avatar === undefined) {
+          document
+            .querySelector("#imagen-perfil")
+            .setAttribute("src", "img/user-profile-img.svg");
+        } else {
+          document
+            .querySelector("#imagen-perfil")
+            .setAttribute("src", `${datos.avatar}`);
+        }
+
+        document
+          .querySelector("#enlace-perfil")
+          .setAttribute("href", `${datos.url}`);
+        document.querySelector(
+          "#seguidores-perfil"
+        ).textContent = `${datos.followers} Seguidores`;
+      })
+      .catch((error) => console.error(error));
+  }
 };
-
-function popularPerfil(username) {
-  fetch(`${URL_PERFIL_JUGADOR}${username}`)
-    .then((respuesta) => respuesta.json())
-    .then((datos) => {
-      if (datos.name == undefined) {
-        document.querySelector("#nombre-perfil").textContent = datos.username;
-      } else {
-        document.querySelector("#nombre-perfil").textContent = datos.name;
-      }
-
-      
-      if (datos.avatar == undefined) {
-        document
-          .querySelector("#imagen-perfil")
-          .setAttribute("src", "img/user-profile-img.svg");
-      } else {
-        document
-          .querySelector("#imagen-perfil")
-          .setAttribute("src", `${datos.avatar}`);
-      }
-
-      document
-        .querySelector("#enlace-perfil")
-        .setAttribute("href", `${datos.url}`);
-      document.querySelector(
-        "#seguidores-perfil"
-      ).textContent = `${datos.followers} Seguidores`;
-
-    })
-    .catch((error) => console.error(error));
-}
