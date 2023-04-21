@@ -23,6 +23,7 @@ const TEXTOS_A_MOSTRAR = {
 
 function popularTabla(arrayRanking, $elementoContenedorDeTabla) {
   let $fila = document.createElement("tr");
+  $fila.id = `rank-${arrayRanking.rank}`
 
   let $ranking = document.createElement("th");
   $ranking.textContent = arrayRanking.rank;
@@ -40,13 +41,11 @@ function popularTabla(arrayRanking, $elementoContenedorDeTabla) {
   $nombre.classList.add("nombre");
   $nombre.id = arrayRanking.username;
 
-  let $contenedor$Bandera = document.createElement("td");
-  $contenedor$Bandera.style.width = "16px";
+  let $contenedorBandera = document.createElement("td");
+  $contenedorBandera.style.width = "16px";
 
-  let paisJugador = arrayRanking.country.slice(34).toLowerCase();
-  let $bandera = document.createElement("span");
-  $bandera.classList.add(`fi`, `fi-${paisJugador}`);
-  $contenedor$Bandera.appendChild($bandera);
+  let $bandera = crearBandera(arrayRanking.country);
+  $contenedorBandera.appendChild($bandera);
 
   let $rating = document.createElement("td");
   $rating.textContent = arrayRanking.score;
@@ -67,13 +66,20 @@ function popularTabla(arrayRanking, $elementoContenedorDeTabla) {
   ).toFixed(2)}%`;
 
   $fila.appendChild($ranking);
-  $fila.appendChild($contenedor$Bandera);
+  $fila.appendChild($contenedorBandera);
   $fila.appendChild($nombre);
   $fila.appendChild($rating);
   $fila.appendChild($totalPartidas);
   $fila.appendChild($porcentajeGanadas);
 
   $elementoContenedorDeTabla.appendChild($fila);
+}
+
+function crearBandera(urlPaisJugador) { //devuelve un span HTML element que muestra la bandera con flag-icons
+  let paisJugador = urlPaisJugador.slice(34).toLowerCase();
+  let $bandera = document.createElement("span");
+  $bandera.classList.add(`fi`, `fi-${paisJugador}`);
+  return $bandera;
 }
 
 function limpiarElementoHTML(elementoHTML) {
@@ -105,14 +111,13 @@ fetch(URL_LEADERBOARD)
 
     $SELECTOR_TIPO_RANKING.onchange = function () {
       limpiarElementoHTML($CUERPO_TABLA);
-
       let opcionSeleccionada = $SELECTOR_TIPO_RANKING.value;
-
+      
       datos[opcionSeleccionada].forEach((arrayRanking) => {
         popularTabla(arrayRanking, $CUERPO_TABLA);
       });
     };
-    })
+  })
   .catch((error) => console.error(error));
 
 $CUERPO_TABLA.onclick = function (event) {
@@ -124,14 +129,31 @@ $CUERPO_TABLA.onclick = function (event) {
 function popularPerfil(username) {
   fetch(`${URL_PERFIL_JUGADOR}${username}`)
     .then((respuesta) => respuesta.json())
-    .then((datos) =>{
-      document.querySelector("#nombre-perfil").textContent = datos.name;
-      document.querySelector("#usuario-perfil").textContent = `${datos.username}`
-      document.querySelector("#imagen-perfil").setAttribute("src",`${datos.avatar}`)
-      document.querySelector("#enlace-perfil").setAttribute("href",`${datos.url}`)
-      document.querySelector("#seguidores-perfil").textContent = `${datos.followers} Seguidores`
-    }
-    
-  )
+    .then((datos) => {
+      if (datos.name == undefined) {
+        document.querySelector("#nombre-perfil").textContent = datos.username;
+      } else {
+        document.querySelector("#nombre-perfil").textContent = datos.name;
+      }
+
+      
+      if (datos.avatar == undefined) {
+        document
+          .querySelector("#imagen-perfil")
+          .setAttribute("src", "img/user-profile-img.svg");
+      } else {
+        document
+          .querySelector("#imagen-perfil")
+          .setAttribute("src", `${datos.avatar}`);
+      }
+
+      document
+        .querySelector("#enlace-perfil")
+        .setAttribute("href", `${datos.url}`);
+      document.querySelector(
+        "#seguidores-perfil"
+      ).textContent = `${datos.followers} Seguidores`;
+
+    })
     .catch((error) => console.error(error));
 }
