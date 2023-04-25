@@ -161,7 +161,11 @@ fetch(URL_LEADERBOARD)
 
 $CUERPO_TABLA.onclick = function (event) {
   if (event.target.classList.contains("nombre")) {
+    mostrarCargando();
+    limpiarPerfil();   
     popularPerfil(event.target.id);
+    ocultarCargando();
+
   }
 
   function popularPerfil(username) {
@@ -205,12 +209,27 @@ $CUERPO_TABLA.onclick = function (event) {
         $PERFIL_IMAGEN.classList.remove("d-none");
 
         $PERFIL_ENLACE.setAttribute("href", `${datos.url}`);
-
-        document.querySelector("#enlace-perfil").textContent =
-          "Enlace de Chess.com";
+        $PERFIL_ENLACE.textContent = "Enlace de Chess.com";
 
         $PERFIL_SEGUIDORES.textContent = `${datos.followers} Seguidores`;
+        
       })
       .catch((error) => console.error(error));
   }
 };
+
+function limpiarPerfil() {
+  $PERFIL_NOMBRE.textContent = "";
+  $PERFIL_IMAGEN.classList.add("d-none");
+  $PERFIL_TITULO.textContent = "";
+  $PERFIL_ENLACE.textContent = "";
+  $PERFIL_SEGUIDORES.textContent = "";
+  $PERFIL_USUARIO.textContent = "";
+}
+function mostrarCargando() {
+  document.querySelector("#cargando-perfil").classList.remove("d-none");
+}
+
+function ocultarCargando(){
+  document.querySelector("#cargando-perfil").classList.add("d-none");
+}
