@@ -164,7 +164,6 @@ $CUERPO_TABLA.onclick = function (event) {
     mostrarCargando();
     limpiarPerfil();   
     popularPerfil(event.target.id);
-    ocultarCargando();
 
   }
 
@@ -212,7 +211,7 @@ $CUERPO_TABLA.onclick = function (event) {
         $PERFIL_ENLACE.textContent = "Enlace de Chess.com";
 
         $PERFIL_SEGUIDORES.textContent = `${datos.followers} Seguidores`;
-        
+        ocultarCargando();
       })
       .catch((error) => console.error(error));
   }
