@@ -1,9 +1,16 @@
 const URL_LEADERBOARD = "https://api.chess.com/pub/leaderboards/";
 const URL_PERFIL_JUGADOR = "https://api.chess.com/pub/player/";
 const RANKING_POR_DEFECTO = "live_blitz";
-const $CUERPO_TABLA = document.querySelector("#cuerpo-tabla");
-const $PERFIL_JUGADOR = document.querySelector("#perfil");
 const $SELECTOR_TIPO_RANKING = document.querySelector("#tipo-ranking");
+const $CUERPO_TABLA = document.querySelector("#cuerpo-tabla");
+
+const $PERFIL = document.querySelector("#perfil");
+const $PERFIL_NOMBRE = document.querySelector("#nombre-perfil");
+const $PERFIL_IMAGEN = document.querySelector("#imagen-perfil");
+const $PERFIL_USUARIO = document.querySelector("#usuario-perfil");
+const $PERFIL_TITULO = document.querySelector("#titulo-perfil");
+const $PERFIL_ENLACE = document.querySelector("#enlace-perfil");
+const $PERFIL_SEGUIDORES = document.querySelector("#seguidores-perfil");
 
 const TEXTOS_A_MOSTRAR = {
   daily: "Por Correspondencia",
@@ -162,14 +169,12 @@ $CUERPO_TABLA.onclick = function (event) {
       .then((respuesta) => respuesta.json())
       .then((datos) => {
         if (datos.name === undefined) {
-          document.querySelector("#nombre-perfil").textContent = datos.username;
+          $PERFIL_NOMBRE.textContent = datos.username;
         } else {
-          document.querySelector("#nombre-perfil").textContent = datos.name;
+          $PERFIL_NOMBRE.textContent = datos.name;
         }
 
-        document.querySelector(
-          "#usuario-perfil"
-        ).textContent = `${datos.username}`;
+        $PERFIL_USUARIO.textContent = `${datos.username}`;
 
         let badgeJugador = document.createElement("span");
 
@@ -177,48 +182,34 @@ $CUERPO_TABLA.onclick = function (event) {
           badgeJugador.classList.add("badge", "bg-warning", "badge-sm");
           badgeJugador.textContent = `${datos.title}`;
           badgeJugador.classList.add("m-2");
-          document.querySelector("#nombre-perfil").prepend(badgeJugador);
-          document.querySelector("#titulo-perfil").textContent = `${TITULOS[datos.title]} de Ajedrez`
+          $PERFIL_NOMBRE.prepend(badgeJugador);
+          $PERFIL_TITULO.textContent = `${TITULOS[datos.title]} de Ajedrez`;
         } else {
-          document.querySelector("#titulo-perfil").textContent = "Jugador amateur"
+          $PERFIL_TITULO.textContent = "Jugador amateur (sin título)";
         }
 
         let rankingDeJugadorClicado = event.srcElement.parentNode.id;
-        document
-          .querySelector("#nombre-perfil")
-          .prepend(`#${rankingDeJugadorClicado} -`);
+        $PERFIL_NOMBRE.prepend(`#${rankingDeJugadorClicado} -`);
 
         let banderaDeJugadorClicado = crearBandera(datos.country);
         banderaDeJugadorClicado.classList.add("m-2", "bandera-jugador");
 
-        document
-          .querySelector("#nombre-perfil")
-          .append(banderaDeJugadorClicado);
+        $PERFIL_NOMBRE.append(banderaDeJugadorClicado);
 
         if (datos.avatar === undefined) {
-          document
-            .querySelector("#imagen-perfil")
-            .setAttribute("src", "img/user-profile-img.svg");
+          $PERFIL_IMAGEN.setAttribute("src", "img/user-profile-img.svg");
         } else {
-          document
-            .querySelector("#imagen-perfil")
-            .setAttribute("src", `${datos.avatar}`);
+          $PERFIL_IMAGEN.setAttribute("src", `${datos.avatar}`);
         }
 
-        document
-            .querySelector("#imagen-perfil").classList.remove("d-none")
+        $PERFIL_IMAGEN.classList.remove("d-none");
 
-        document
-          .querySelector("#enlace-perfil")
-          .setAttribute("href", `${datos.url}`);
+        $PERFIL_ENLACE.setAttribute("href", `${datos.url}`);
 
-        document
-          .querySelector("#enlace-perfil")
-          .textContent = "Enlace de Chess.com";
+        document.querySelector("#enlace-perfil").textContent =
+          "Enlace de Chess.com";
 
-        document.querySelector(
-          "#seguidores-perfil"
-        ).textContent = `${datos.followers} Seguidores`;
+        $PERFIL_SEGUIDORES.textContent = `${datos.followers} Seguidores`;
       })
       .catch((error) => console.error(error));
   }
