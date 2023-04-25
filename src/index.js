@@ -21,6 +21,19 @@ const TEXTOS_A_MOSTRAR = {
   battle: "Batalla de Problemas",
 };
 
+const BANDERAS_EXOTICAS = {
+xa : "ic", // Canary Islands
+xb : "es-pv",// "Basque Country"
+xc : "es-ct",// "Catalonia".
+xe : "gb-eng",//England",
+xg : "es-ga",//Galicia"
+xk: "xk", //Kosovo"
+xp : "ps",//Palestine"
+xs : "gb-sct",//Scotland"
+xw: "gb-wls", //Wales"
+xx : "un",//International"
+}
+
 function popularTabla(arrayRanking, $elementoContenedorDeTabla) {
   let $fila = document.createElement("tr");
   $fila.id = `${arrayRanking.rank}`;
@@ -78,6 +91,11 @@ function popularTabla(arrayRanking, $elementoContenedorDeTabla) {
 function crearBandera(urlPaisJugador) {
   //devuelve un span HTML element que muestra la bandera con flag-icons
   let paisJugador = urlPaisJugador.slice(34).toLowerCase();
+  console.log(paisJugador)
+  if (paisJugador in BANDERAS_EXOTICAS){
+    paisJugador = BANDERAS_EXOTICAS[paisJugador]
+  }
+  console.log(paisJugador)
   let $bandera = document.createElement("span");
   $bandera.classList.add(`fi`, `fi-${paisJugador}`);
   return $bandera;
@@ -134,10 +152,11 @@ $CUERPO_TABLA.onclick = function (event) {
           document.querySelector("#nombre-perfil").textContent = datos.username;
         } else {
           document.querySelector("#nombre-perfil").textContent = datos.name;
-          document.querySelector(
-            "#usuario-perfil"
-          ).textContent = `${datos.username}`;
         }
+
+        document.querySelector(
+          "#usuario-perfil"
+        ).textContent = `${datos.username}`;
 
         let badgeJugador = document.createElement("span");
 
