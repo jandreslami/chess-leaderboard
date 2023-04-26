@@ -5,12 +5,16 @@
   "main": "index.js",
   "scripts": {
     "test": "test",
-    "start": "http-server -c-1"
+    "start": "http-server -c-1",
+    "cypress":"cypress open"
   },
   "author": "",
   "license": "ISC",
   "dependencies": {
     "flag-icons": "^6.6.6",
     "http-server": "^14.1.1"
+  },
+  "devDependencies": {
+    "cypress": "^12.10.0"
   }
 }
