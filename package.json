@@ -6,7 +6,7 @@
   "scripts": {
     "test": "test",
     "start": "http-server -c-1",
-    "cypress":"cypress open"
+    "cypress": "cypress open"
   },
   "author": "",
   "license": "ISC",
@@ -15,6 +15,9 @@
     "http-server": "^14.1.1"
   },
   "devDependencies": {
-    "cypress": "^12.10.0"
+    "cypress": "^12.10.0",
+    "eslint": "^8.40.0",
+    "eslint-config-airbnb-base": "^15.0.0",
+    "eslint-plugin-import": "^2.27.5"
   }
 }
