@@ -4,13 +4,6 @@ import * as config from '../config.js';
 import * as api from './api.js';
 import * as ui from './ui.js';
 
-/* Inicializar(
-  traerDatos(),
-  iniciarUI(),
-  traerDatos(),
-
-) */
-
 async function actualizarPerfil() {
   ui.limpiarPerfil();
   ui.mostrarCargando();
