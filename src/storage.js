@@ -19,4 +19,14 @@ export async function traerLeaderboards() {
   return todosLosLeaderboards;
 }
 
-// export function traerJugador(username) {}
+export async function traerJugador(username) {
+  let datosJugador = localStorage.getItem(username);
+
+  if (datosJugador) {
+    return JSON.parse(datosJugador);
+  }
+
+  datosJugador = await api.traerDatosJugador(config.URL_PERFIL_JUGADOR, username);
+  guardarEnLocalStorage(`${username}`, datosJugador);
+  return datosJugador;
+}
