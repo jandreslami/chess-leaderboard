@@ -16,7 +16,9 @@ async function actualizarPerfil() {
 }
 
 async function inicializar() {
-  const todosLosLeaderboards = await api.traerLeaderboards(config.URL_LEADERBOARD);
+  // ui.mostrarPlaceholders();
+  const todosLosLeaderboards = await storage.traerLeaderboards();
+
   ui.crearLeaderboard(todosLosLeaderboards, config.LEADERBOARD_POR_DEFECTO, actualizarPerfil);
   ui.crearTiposLeaderboard(todosLosLeaderboards, actualizarPerfil);
 }
