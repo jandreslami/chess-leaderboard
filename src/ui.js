@@ -3,8 +3,6 @@ import {
   TIPOS_LEADERBOARD, BANDERAS_EXOTICAS, TITULOS,
 } from './diccionarios.js';
 
-import { LEADERBOARD_POR_DEFECTO } from '../config.js';
-
 const $PERFIL_NOMBRE = document.querySelector('#nombre-perfil');
 const $PERFIL_IMAGEN = document.querySelector('#imagen-perfil');
 const $PERFIL_USUARIO = document.querySelector('#usuario-perfil');
@@ -139,7 +137,7 @@ function crearFilaLeaderboard(registroLeaderboard) {
 function crearLeaderboard(datosLeaderboard, tipoLeaderboard, funcionCallback) {
   datosLeaderboard[tipoLeaderboard].forEach(
     (registroLeaderboard) => {
-      crearFilaLeaderboard(registroLeaderboard)
+      crearFilaLeaderboard(registroLeaderboard);
     },
   );
 
@@ -158,7 +156,11 @@ function crearLeaderboard(datosLeaderboard, tipoLeaderboard, funcionCallback) {
   };
 }
 
-function crearTiposLeaderboard(todosLosLeaderboards, leaderboardSeleccionadoPorDefecto, funcionCallback) {
+function crearTiposLeaderboard(
+  todosLosLeaderboards,
+  leaderboardSeleccionadoPorDefecto,
+  funcionCallback,
+) {
   const $SELECTOR_TIPO_LEADERBOARD = document.querySelector('#tipo-leaderboard');
   const arrayTiposLeaderboards = Object.keys(todosLosLeaderboards);
 
@@ -170,9 +172,8 @@ function crearTiposLeaderboard(todosLosLeaderboards, leaderboardSeleccionadoPorD
 
     $opcionLeaderboard.textContent = TIPOS_LEADERBOARD[tipoLeaderboard];
 
-
     if (tipoLeaderboard === leaderboardSeleccionadoPorDefecto) {
-      $opcionLeaderboard.setAttribute('selected', '')
+      $opcionLeaderboard.setAttribute('selected', '');
     }
 
     $SELECTOR_TIPO_LEADERBOARD.appendChild($opcionLeaderboard);

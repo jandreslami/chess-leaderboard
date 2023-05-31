@@ -10,7 +10,7 @@ async function actualizarPerfil() {
   ui.mostrarCargando();
 
   const datosJugador = await
-    storage.traerJugador(ui.obtenerJugadorSeleccionado());
+  storage.traerJugador(ui.obtenerJugadorSeleccionado());
 
   ui.ocultarCargando();
   ui.popularPerfil(datosJugador);
