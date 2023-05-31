@@ -3,6 +3,8 @@ import {
   TIPOS_LEADERBOARD, BANDERAS_EXOTICAS, TITULOS,
 } from './diccionarios.js';
 
+import { LEADERBOARD_POR_DEFECTO } from '../config.js';
+
 const $PERFIL_NOMBRE = document.querySelector('#nombre-perfil');
 const $PERFIL_IMAGEN = document.querySelector('#imagen-perfil');
 const $PERFIL_USUARIO = document.querySelector('#usuario-perfil');
@@ -33,6 +35,33 @@ function mostrarCargando() {
 
 function ocultarCargando() {
   document.querySelector('#cargando-perfil').classList.add('d-none');
+}
+
+function mostrarPlaceholders() {
+  const cantidadFilasLeaderboard = 50;
+
+  for (let i = 0; i < cantidadFilasLeaderboard; i++) {
+    const $fila = document.createElement('tr');
+    const $placeholderRank = document.createElement('th');
+    const $placeholderBanderaContenedor = document.createElement('td');
+    const $placeholderNombreContenedor = document.createElement('td');
+
+    $placeholderRank.textContent = '#';
+
+    const $placeholderBandera = document.createElement('div');
+    $placeholderBandera.classList.add('gradient-placeholder');
+    $placeholderBanderaContenedor.appendChild($placeholderBandera);
+
+    const $placeholderNombre = document.createElement('div');
+    $placeholderNombre.classList.add('gradient-placeholder');
+    $placeholderNombreContenedor.appendChild($placeholderNombre);
+
+    $fila.appendChild($placeholderRank);
+    $fila.appendChild($placeholderBanderaContenedor);
+    $fila.appendChild($placeholderNombreContenedor);
+
+    $CUERPO_TABLA.appendChild($fila);
+  }
 }
 
 function crearBandera(urlPaisJugador, banderasExoticas) {
@@ -84,8 +113,8 @@ function crearFilaLeaderboard(registroLeaderboard) {
   const partidasTablas = Number(registroLeaderboard.draw_count);
 
   const partidasTotales = partidasGanadas
-  + partidasPerdidas
-  + partidasTablas;
+    + partidasPerdidas
+    + partidasTablas;
 
   const $partidasTotales = document.createElement('td');
 
@@ -109,7 +138,9 @@ function crearFilaLeaderboard(registroLeaderboard) {
 
 function crearLeaderboard(datosLeaderboard, tipoLeaderboard, funcionCallback) {
   datosLeaderboard[tipoLeaderboard].forEach(
-    (registroLeaderboard) => crearFilaLeaderboard(registroLeaderboard),
+    (registroLeaderboard) => {
+      crearFilaLeaderboard(registroLeaderboard)
+    },
   );
 
   $CUERPO_TABLA.onclick = (event) => {
@@ -127,7 +158,7 @@ function crearLeaderboard(datosLeaderboard, tipoLeaderboard, funcionCallback) {
   };
 }
 
-function crearTiposLeaderboard(todosLosLeaderboards, funcionCallback) {
+function crearTiposLeaderboard(todosLosLeaderboards, leaderboardSeleccionadoPorDefecto, funcionCallback) {
   const $SELECTOR_TIPO_LEADERBOARD = document.querySelector('#tipo-leaderboard');
   const arrayTiposLeaderboards = Object.keys(todosLosLeaderboards);
 
@@ -136,7 +167,13 @@ function crearTiposLeaderboard(todosLosLeaderboards, funcionCallback) {
     const tipoLeaderboard = arrayTiposLeaderboards[i];
 
     $opcionLeaderboard.value = tipoLeaderboard;
+
     $opcionLeaderboard.textContent = TIPOS_LEADERBOARD[tipoLeaderboard];
+
+
+    if (tipoLeaderboard === leaderboardSeleccionadoPorDefecto) {
+      $opcionLeaderboard.setAttribute('selected', '')
+    }
 
     $SELECTOR_TIPO_LEADERBOARD.appendChild($opcionLeaderboard);
   }
@@ -144,6 +181,7 @@ function crearTiposLeaderboard(todosLosLeaderboards, funcionCallback) {
   $SELECTOR_TIPO_LEADERBOARD.onchange = () => {
     limpiarElementoHTML($CUERPO_TABLA);
     const opcionSeleccionada = $SELECTOR_TIPO_LEADERBOARD.value;
+
     crearLeaderboard(todosLosLeaderboards, opcionSeleccionada, funcionCallback);
   };
 }
@@ -209,4 +247,5 @@ export {
   crearLeaderboard,
   crearTiposLeaderboard,
   obtenerJugadorSeleccionado,
+  mostrarPlaceholders,
 };
