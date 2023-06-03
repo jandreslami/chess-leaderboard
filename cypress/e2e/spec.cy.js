@@ -30,7 +30,7 @@ context('Test Leaderboard', () => {
       cy.get('@tabla')
         .find('.nombre')
         .should('not.be.NaN')
-        .should('not.be.undefined');
+        .and('not.be.undefined');
     });
 
     it('Al seleccionar dos leaderboard distintos, se regenera la tabla', () => {
