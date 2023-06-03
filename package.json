@@ -4,7 +4,7 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "test": "test",
+    "test": "jest --verbose --collectCoverage",
     "start": "http-server -c-1",
     "cypress": "cypress open"
   },
@@ -15,6 +15,7 @@
     "http-server": "^14.1.1"
   },
   "devDependencies": {
+    "@types/jest": "^29.5.2",
     "cypress": "^12.10.0",
     "eslint": "^8.40.0",
     "eslint-config-airbnb-base": "^15.0.0",
