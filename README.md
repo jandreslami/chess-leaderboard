@@ -10,3 +10,9 @@ Descargar repositorio y hacer `npm run start` o ver [deploy en GH pages](https:/
 ![captura1](img/screenshot-tabla.png)
 
 ![captura2](img/screenshot-perfil.png)
+
+### Todo
+- [x] Cache con localstorage
+- [x] Testing con Cypress
+- [ ] Testing con Jest
+- [ ] Placeholders para evitar layout shift al cargar
