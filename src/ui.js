@@ -41,8 +41,8 @@ function adaptarTablaALeaderboardsConPuntaje() {
     e.classList.add('d-none');
   });
 
-  const $tituloColumnaRating = document.querySelector('#rating');
-  $tituloColumnaRating.textContent = 'Puntaje';
+  const $encabezadoColumnaRating = document.querySelector('#rating');
+  $encabezadoColumnaRating.textContent = 'Puntaje';
 }
 
 function adaptarTablaALeaderboardsConRating() {
@@ -50,6 +50,9 @@ function adaptarTablaALeaderboardsConRating() {
   $elementosAMostrar.forEach((e) => {
     e.classList.remove('d-none');
   });
+
+  const $encabezadoColumnaRating = document.querySelector('#rating');
+  $encabezadoColumnaRating.textContent = 'Rating (Chess.com)';
 }
 
 function mostrarPlaceholders() {
