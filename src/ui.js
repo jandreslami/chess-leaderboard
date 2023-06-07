@@ -20,7 +20,7 @@ function limpiarPerfil() {
   $PERFIL_USUARIO.textContent = '';
 }
 
-function limpiarElementoHTML(elementoHTML) {
+function limpiarHijosElementoHTML(elementoHTML) {
   // elimina todos sus hijos
   while (elementoHTML.firstChild) {
     elementoHTML.firstChild.remove();
@@ -33,6 +33,23 @@ function mostrarCargando() {
 
 function ocultarCargando() {
   document.querySelector('#cargando-perfil').classList.add('d-none');
+}
+
+function adaptarTablaALeaderboardsConPuntaje() {
+  const $elementosAOcultar = document.querySelectorAll('.leaderboard-con-rating');
+  $elementosAOcultar.forEach((e) => {
+    e.classList.add('d-none');
+  });
+
+  const $tituloColumnaRating = document.querySelector('#rating');
+  $tituloColumnaRating.textContent = 'Puntaje';
+}
+
+function adaptarTablaALeaderboardsConRating() {
+  const $elementosAMostrar = document.querySelectorAll('.leaderboard-con-rating');
+  $elementosAMostrar.forEach((e) => {
+    e.classList.remove('d-none');
+  });
 }
 
 function mostrarPlaceholders() {
@@ -128,8 +145,13 @@ function crearFilaLeaderboard(registroLeaderboard) {
   $fila.appendChild($contenedorBandera);
   $fila.appendChild($nombre);
   $fila.appendChild($rating);
-  $fila.appendChild($partidasTotales);
-  $fila.appendChild($porcentajeGanadas);
+
+  // contempla los rankings que son puntajes
+
+  if (partidasTotales !== 0) {
+    $fila.appendChild($partidasTotales);
+    $fila.appendChild($porcentajeGanadas);
+  }
 
   $CUERPO_TABLA.appendChild($fila);
 }
@@ -180,8 +202,18 @@ function crearTiposLeaderboard(
   }
 
   $SELECTOR_TIPO_LEADERBOARD.onchange = () => {
-    limpiarElementoHTML($CUERPO_TABLA);
+    limpiarHijosElementoHTML($CUERPO_TABLA);
     const opcionSeleccionada = $SELECTOR_TIPO_LEADERBOARD.value;
+
+    const leaderboardsConPuntaje = ['live_threecheck', 'live_crazyhouse', 'live_kingofthehill', 'tactics',
+      'rush',
+      'battle'];
+
+    if (leaderboardsConPuntaje.includes(opcionSeleccionada)) {
+      adaptarTablaALeaderboardsConPuntaje();
+    } else {
+      adaptarTablaALeaderboardsConRating();
+    }
 
     crearLeaderboard(todosLosLeaderboards, opcionSeleccionada, funcionCallback);
   };
