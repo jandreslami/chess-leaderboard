@@ -1,4 +1,4 @@
-import * as api from './api.js';
+import * as api from './fetchApi.js';
 import * as config from '../config.js';
 
 export function guardarEnLocalStorage(key, datos) {
