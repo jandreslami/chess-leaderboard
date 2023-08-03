@@ -3,7 +3,7 @@ import {
   TIPOS_LEADERBOARD, BANDERAS_EXOTICAS, TITULOS,
 } from './diccionarios.js';
 
-import { crearBandera } from '../utils.js';
+import { crearBandera } from './utils.js';
 
 const $PERFIL_NOMBRE = document.querySelector('#nombre-perfil');
 const $PERFIL_IMAGEN = document.querySelector('#imagen-perfil');
