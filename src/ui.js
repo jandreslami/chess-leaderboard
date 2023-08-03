@@ -3,6 +3,8 @@ import {
   TIPOS_LEADERBOARD, BANDERAS_EXOTICAS, TITULOS,
 } from './diccionarios.js';
 
+import { crearBandera } from '../utils.js';
+
 const $PERFIL_NOMBRE = document.querySelector('#nombre-perfil');
 const $PERFIL_IMAGEN = document.querySelector('#imagen-perfil');
 const $PERFIL_USUARIO = document.querySelector('#usuario-perfil');
@@ -80,19 +82,6 @@ function mostrarPlaceholders() {
 
     $CUERPO_TABLA.appendChild($fila);
   }
-}
-
-function crearBandera(urlPaisJugador, banderasExoticas) {
-  // devuelve un span HTML element que muestra la bandera con flag-icons
-  let paisJugador = urlPaisJugador.slice(34).toLowerCase();
-
-  if (paisJugador in banderasExoticas) {
-    paisJugador = banderasExoticas[paisJugador];
-  }
-
-  const $bandera = document.createElement('span');
-  $bandera.classList.add('fi', `fi-${paisJugador}`);
-  return $bandera;
 }
 
 function crearFilaLeaderboard(registroLeaderboard) {
