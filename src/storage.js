@@ -1,9 +1,6 @@
-import * as api from './servicios/fetchApi.js';
-import * as config from '../config.js';
-
-export function guardarEnLocalStorage(key, datos) {
-  if (!localStorage.getItem(`${key}`)) {
-    localStorage.setItem(`${key}`, JSON.stringify(datos));
+export function guardarDatos(key, datos) {
+  if (!localStorage.getItem(key)) {
+    localStorage.setItem(key, JSON.stringify(datos));
   }
 }
 
@@ -22,6 +19,5 @@ export async function traerJugador(username) {
   if (datosJugador) {
     return JSON.parse(datosJugador);
   }
-
   return null;
 }
