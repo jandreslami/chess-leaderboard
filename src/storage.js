@@ -1,4 +1,4 @@
-import * as api from './fetchApi.js';
+import * as api from './servicios/fetchApi.js';
 import * as config from '../config.js';
 
 export function guardarEnLocalStorage(key, datos) {
@@ -7,26 +7,21 @@ export function guardarEnLocalStorage(key, datos) {
   }
 }
 
-export async function traerLeaderboards() {
-  let todosLosLeaderboards = localStorage.getItem('leaderboards');
+export async function traerLeaderboard(tipoLeaderboard) {
+  const datosLeaderboard = localStorage.getItem(tipoLeaderboard);
 
-  if (todosLosLeaderboards) {
-    return JSON.parse(todosLosLeaderboards);
+  if (datosLeaderboard) {
+    return JSON.parse(datosLeaderboard);
   }
-
-  todosLosLeaderboards = await api.traerLeaderboards(config.URL_LEADERBOARD);
-  guardarEnLocalStorage('leaderboards', todosLosLeaderboards);
-  return todosLosLeaderboards;
+  return null;
 }
 
 export async function traerJugador(username) {
-  let datosJugador = localStorage.getItem(username);
+  const datosJugador = localStorage.getItem(username);
 
   if (datosJugador) {
     return JSON.parse(datosJugador);
   }
 
-  datosJugador = await api.traerDatosJugador(config.URL_PERFIL_JUGADOR, username);
-  guardarEnLocalStorage(`${username}`, datosJugador);
-  return datosJugador;
+  return null;
 }
