@@ -41,4 +41,6 @@ const BANDERAS_EXOTICAS = {
   xx: 'un', // International"
 };
 
-export { TIPOS_LEADERBOARD, BANDERAS_EXOTICAS, TITULOS };
+export {
+  TIPOS_LEADERBOARD, BANDERAS_EXOTICAS, TITULOS,
+};

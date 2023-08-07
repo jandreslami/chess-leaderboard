@@ -1,5 +1,5 @@
 function devolverPaisJugador(urlPaisJugador) {
-  // devuelve el pais del jugador como string (p.ej."es" o "en")
+  // devuelve el pais del jugador como string (p.ej."es" o "ar")
   return urlPaisJugador.slice(34).toLowerCase();
 }
 function crearBandera(urlPaisJugador, banderasExoticas) {
