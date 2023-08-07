@@ -1,9 +1,15 @@
 /* eslint-disable no-restricted-syntax */
 class Leaderboard {
-  constructor(nombre, esConPuntaje, ranking = []) {
-    this.nombre = nombre;
-    this.ranking = ranking;
-    this.esConPuntaje = esConPuntaje;
+  constructor(tipo, rankingJugadoresEnLeaderboard) {
+    this.tipo = tipo;
+    this.rankingJugadoresEnLeaderboard = rankingJugadoresEnLeaderboard;
+    this.esConPuntaje = this.esConPuntaje();
+  }
+
+  esConPuntaje() {
+    if ([this.rankingJugadoresEnLeaderboard][0].win_count === 0) {
+      return true;
+    } return false;
   }
 }
 
