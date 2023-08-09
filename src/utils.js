@@ -2,16 +2,15 @@ function devolverPaisJugador(urlPaisJugador) {
   // devuelve el pais del jugador como string (p.ej."es" o "ar")
   return urlPaisJugador.slice(34).toLowerCase();
 }
-function crearBandera(urlPaisJugador, banderasExoticas) {
+function crearBandera(paisJugador, banderasExoticas) {
   // devuelve un span HTML element que muestra la bandera con flag-icons
-  let paisJugador = devolverPaisJugador(urlPaisJugador);
-
+  let paisDefinitivoJugador = paisJugador;
   if (paisJugador in banderasExoticas) {
-    paisJugador = banderasExoticas[paisJugador];
+    paisDefinitivoJugador = banderasExoticas[paisJugador];
   }
 
   const $bandera = document.createElement('span');
-  $bandera.classList.add('fi', `fi-${paisJugador}`);
+  $bandera.classList.add('fi', `fi-${paisDefinitivoJugador}`);
   return $bandera;
 }
 
