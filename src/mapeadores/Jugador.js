@@ -9,15 +9,17 @@ function mapearJugador(datosApiJugador) {
     country: pais,
     followers: seguidores,
     avatar: imagenPerfil,
+    url: enlacePerfil,
   } = datosApiJugador;
 
   return new Jugador(
     username,
     nombre,
     titulo,
+    devolverPaisJugador(pais),
     seguidores,
     imagenPerfil,
-    devolverPaisJugador(pais),
+    enlacePerfil,
   );
 }
 

@@ -1,10 +1,11 @@
-import JugadorEnLeaderboard from '../entidades/JugadorEnLeaderboard';
-import mapearJugador from './Jugador';
+import JugadorEnLeaderboard from '../entidades/JugadorEnLeaderboard.js';
+import mapearJugador from './Jugador.js';
 
 function mapearJugadorEnLeaderboard(datosApiJugadorEnLeaderboard) {
   const jugador = mapearJugador(datosApiJugadorEnLeaderboard);
 
   const {
+    rank: posicionEnLeaderboard,
     score: rating,
     win_count: partidasGanadas,
     loss_count: partidasPerdidas,
@@ -15,9 +16,11 @@ function mapearJugadorEnLeaderboard(datosApiJugadorEnLeaderboard) {
     jugador.username,
     jugador.nombre,
     jugador.titulo,
+    jugador.pais,
     jugador.seguidores,
     jugador.imagenPerfil,
-    jugador.pais,
+    jugador.enlacePerfil,
+    posicionEnLeaderboard,
     rating,
     partidasGanadas,
     partidasPerdidas,
