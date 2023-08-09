@@ -88,7 +88,7 @@ function mostrarPlaceholders() {
 function crearFilaLeaderboard(jugadorEnLeaderboard) {
   const $fila = document.createElement('tr');
 
-  const posicion = jugadorEnLeaderboard.posicionJugador;
+  const posicion = jugadorEnLeaderboard.posicionEnLeaderboard;
   const $leaderboard = document.createElement('th');
   $leaderboard.textContent = posicion;
   $leaderboard.style.width = '16px';
@@ -211,49 +211,49 @@ async function crearTiposLeaderboard(
   };
 }
 
-function popularPerfil(Jugador) {
-  if (Jugador.nombre === undefined) {
-    $PERFIL_NOMBRE.textContent = Jugador.nombre;
+function popularPerfil(jugador) {
+  if (jugador.nombre === undefined) {
+    $PERFIL_NOMBRE.textContent = jugador.nombre;
   } else {
-    $PERFIL_NOMBRE.textContent = Jugador.nombre;
+    $PERFIL_NOMBRE.textContent = jugador.nombre;
   }
 
-  $PERFIL_USUARIO.textContent = `${Jugador.username}`;
+  $PERFIL_USUARIO.textContent = `${jugador.username}`;
 
   const badgeJugador = document.createElement('span');
 
-  if (Jugador.titulo) {
+  if (jugador.titulo) {
     badgeJugador.classList.add('badge', 'bg-warning', 'badge-sm');
-    badgeJugador.textContent = `${Jugador.titulo}`;
+    badgeJugador.textContent = `${jugador.titulo}`;
     badgeJugador.classList.add('m-2');
     $PERFIL_NOMBRE.prepend(badgeJugador);
-    $PERFIL_TITULO.textContent = `${TITULOS[Jugador.titulo]} de Ajedrez`;
+    $PERFIL_TITULO.textContent = `${TITULOS[jugador.titulo]} de Ajedrez`;
   } else {
     $PERFIL_TITULO.textContent = 'Jugador amateur (sin título)';
   }
 
-  const jugadorSeleccionado = document.querySelector(`#${Jugador.username}`);
+  const jugadorSeleccionado = document.querySelector(`#${jugador.username}`);
 
   const posicionJugador = jugadorSeleccionado.dataset.posicion;
   $PERFIL_NOMBRE.prepend(`#${posicionJugador} -`);
 
-  const banderaJugador = crearBandera(Jugador.pais, BANDERAS_EXOTICAS);
+  const banderaJugador = crearBandera(jugador.pais, BANDERAS_EXOTICAS);
   banderaJugador.classList.add('m-2', 'bandera-jugador');
 
   $PERFIL_NOMBRE.append(banderaJugador);
 
-  if (Jugador.imagenPerfil === undefined) {
+  if (jugador.imagenPerfil === undefined) {
     $PERFIL_IMAGEN.setAttribute('src', 'img/user-profile-img.svg');
   } else {
-    $PERFIL_IMAGEN.setAttribute('src', `${Jugador.imagenPerfil}`);
+    $PERFIL_IMAGEN.setAttribute('src', `${jugador.imagenPerfil}`);
   }
 
   $PERFIL_IMAGEN.classList.remove('d-none');
 
-  $PERFIL_ENLACE.setAttribute('href', `${Jugador.enlacePerfil}`);
+  $PERFIL_ENLACE.setAttribute('href', `${jugador.enlacePerfil}`);
   $PERFIL_ENLACE.textContent = 'Enlace de Chess.com';
 
-  $PERFIL_SEGUIDORES.textContent = `${Jugador.seguidores} Seguidores`;
+  $PERFIL_SEGUIDORES.textContent = `${jugador.seguidores} Seguidores`;
 }
 
 function obtenerJugadorSeleccionado() {
