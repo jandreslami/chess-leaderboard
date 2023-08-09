@@ -1,3 +1,6 @@
+/* eslint-disable guard-for-in */
+/* eslint-disable no-restricted-syntax */
+/* eslint-disable prefer-const */
 import * as api from './fetchApi.js';
 import * as storage from '../storage.js';
 import * as config from '../../config.js';
@@ -7,10 +10,10 @@ import mapearLeaderboard from '../mapeadores/Leaderboard.js';
 export async function traerJugador(username) {
   let jugador;
 
-  try {
-    storage.traerJugador(username);
-  } catch (e) {
-    jugador = api.traerDatosJugador(config.URL_PERFIL_JUGADOR, username);
+  if (storage.traerJugador(username)) {
+    jugador = storage.traerJugador(username);
+  } else {
+    jugador = await api.traerDatosJugador(config.URL_PERFIL_JUGADOR, username);
     mapearJugador(jugador);
     storage.guardarDatos(username, jugador);
   }
@@ -18,20 +21,32 @@ export async function traerJugador(username) {
   return jugador;
 }
 
-// // datosJugador = await api.traerDatosJugador(config.URL_PERFIL_JUGADOR, username);
-//   guardarEnLocalStorage(`${username}`, datosJugador);
-
 export async function traerLeaderboard(tipoLeaderboard) {
-  let leaderboard;
-  try {
-    storage.traerLeaderboard(tipoLeaderboard);
-  } catch (e) {
-    const todosLosLeaderboards = api.traerLeaderboards(config.URL_LEADERBOARD);
-    leaderboard = mapearLeaderboard(tipoLeaderboard, todosLosLeaderboards);
-    storage.guardarDatos(tipoLeaderboard, leaderboard);
+  let leaderboard = await storage.traerLeaderboard(tipoLeaderboard);
+
+  if (leaderboard != null) {
+    return leaderboard;
   }
+  const datosTodosLosLeaderboards = await api.traerLeaderboards(config.URL_LEADERBOARD);
+  const datosLeaderboardATraer = datosTodosLosLeaderboards[tipoLeaderboard];
+  leaderboard = mapearLeaderboard(tipoLeaderboard, datosLeaderboardATraer);
+  storage.guardarDatos(tipoLeaderboard, leaderboard);
 
   return leaderboard;
 }
-//   todosLosLeaderboards = await api.traerLeaderboards(config.URL_LEADERBOARD);
-//   guardarEnLocalStorage('leaderboards', todosLosLeaderboards);
+
+export async function traerListadoLeaderboards() {
+  const listadoLeaderboards = await storage.traerListadoLeaderboards();
+
+  if (listadoLeaderboards != null) {
+    return listadoLeaderboards;
+  }
+  const datosTodosLosLeaderboards = await api.traerLeaderboards(config.URL_LEADERBOARD);
+
+  const arrayListadoLeaderboards = [];
+  for (let key in datosTodosLosLeaderboards) {
+    arrayListadoLeaderboards.push(key);
+  }
+  storage.guardarDatos('listadoLeaderboards', arrayListadoLeaderboards);
+  return listadoLeaderboards;
+}

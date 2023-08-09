@@ -7,17 +7,16 @@ export function guardarDatos(key, datos) {
 export async function traerLeaderboard(tipoLeaderboard) {
   const datosLeaderboard = localStorage.getItem(tipoLeaderboard);
 
-  if (datosLeaderboard) {
-    return JSON.parse(datosLeaderboard);
-  }
-  return null;
+  return JSON.parse(datosLeaderboard);
 }
 
 export async function traerJugador(username) {
   const datosJugador = localStorage.getItem(username);
 
-  if (datosJugador) {
-    return JSON.parse(datosJugador);
-  }
-  return null;
+  return JSON.parse(datosJugador);
+}
+
+export async function traerListadoLeaderboards() {
+  const listadoLeaderboards = localStorage.getItem('listadoLeaderboards');
+  return JSON.parse(listadoLeaderboards);
 }
