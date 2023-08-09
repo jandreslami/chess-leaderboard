@@ -2,6 +2,7 @@
 import {
   TIPOS_LEADERBOARD, BANDERAS_EXOTICAS, TITULOS,
 } from './diccionarios.js';
+import { traerLeaderboard, traerListadoLeaderboards } from './servicios/traerDatos.js';
 
 import { crearBandera } from './utils.js';
 
@@ -62,11 +63,11 @@ function mostrarPlaceholders() {
 
   for (let i = 0; i < cantidadFilasLeaderboard; i++) {
     const $fila = document.createElement('tr');
-    const $placeholderRank = document.createElement('th');
+    const $placeholderPosicion = document.createElement('th');
     const $placeholderBanderaContenedor = document.createElement('td');
     const $placeholderNombreContenedor = document.createElement('td');
 
-    $placeholderRank.textContent = '#';
+    $placeholderPosicion.textContent = '#';
 
     const $placeholderBandera = document.createElement('div');
     $placeholderBandera.classList.add('gradient-placeholder');
@@ -76,7 +77,7 @@ function mostrarPlaceholders() {
     $placeholderNombre.classList.add('gradient-placeholder');
     $placeholderNombreContenedor.appendChild($placeholderNombre);
 
-    $fila.appendChild($placeholderRank);
+    $fila.appendChild($placeholderPosicion);
     $fila.appendChild($placeholderBanderaContenedor);
     $fila.appendChild($placeholderNombreContenedor);
 
@@ -84,47 +85,47 @@ function mostrarPlaceholders() {
   }
 }
 
-function crearFilaLeaderboard(registroLeaderboard) {
+function crearFilaLeaderboard(jugadorEnLeaderboard) {
   const $fila = document.createElement('tr');
 
+  const posicion = jugadorEnLeaderboard.posicionJugador;
   const $leaderboard = document.createElement('th');
-  $leaderboard.textContent = registroLeaderboard.rank;
+  $leaderboard.textContent = posicion;
   $leaderboard.style.width = '16px';
 
   const $nombre = document.createElement('td');
 
-  if (registroLeaderboard.name === undefined) {
-    $nombre.textContent = registroLeaderboard.username;
+  if (jugadorEnLeaderboard.nombre === undefined) {
+    $nombre.textContent = jugadorEnLeaderboard.username;
   } else {
-    $nombre.textContent = registroLeaderboard.name;
+    $nombre.textContent = jugadorEnLeaderboard.nombre;
   }
 
   $nombre.setAttribute('data-bs-toggle', 'modal');
   $nombre.setAttribute('data-bs-target', '#perfil');
   $nombre.classList.add('nombre');
-  $nombre.id = (registroLeaderboard.username).toLowerCase();
-  $nombre.dataset.rank = `${registroLeaderboard.rank}`;
+  $nombre.id = (jugadorEnLeaderboard.username).toLowerCase();
+  $nombre.dataset.posicion = `${posicion}`;
 
   const $contenedorBandera = document.createElement('td');
   $contenedorBandera.style.width = '16px';
 
-  const $bandera = crearBandera(registroLeaderboard.country, BANDERAS_EXOTICAS);
+  const $bandera = crearBandera(jugadorEnLeaderboard.pais, BANDERAS_EXOTICAS);
   $contenedorBandera.appendChild($bandera);
 
   const $rating = document.createElement('td');
 
-  $rating.textContent = registroLeaderboard.score;
+  $rating.textContent = jugadorEnLeaderboard.rating;
 
-  const partidasGanadas = Number(registroLeaderboard.win_count);
-  const partidasPerdidas = Number(registroLeaderboard.loss_count);
-  const partidasTablas = Number(registroLeaderboard.draw_count);
+  const partidasGanadas = Number(jugadorEnLeaderboard.partidasGanadas);
+  const partidasPerdidas = Number(jugadorEnLeaderboard.partidasPerdidas);
+  const partidasTablas = Number(jugadorEnLeaderboard.partidasTablas);
 
   const partidasTotales = partidasGanadas
     + partidasPerdidas
     + partidasTablas;
 
   const $partidasTotales = document.createElement('td');
-
   $partidasTotales.textContent = partidasTotales;
 
   const $porcentajeGanadas = document.createElement('td');
@@ -138,8 +139,7 @@ function crearFilaLeaderboard(registroLeaderboard) {
   $fila.appendChild($nombre);
   $fila.appendChild($rating);
 
-  // contempla los rankings que son puntajes
-
+  // contempla los leaderboards que son puntajes
   if (partidasTotales !== 0) {
     $fila.appendChild($partidasTotales);
     $fila.appendChild($porcentajeGanadas);
@@ -148,10 +148,11 @@ function crearFilaLeaderboard(registroLeaderboard) {
   $CUERPO_TABLA.appendChild($fila);
 }
 
-function crearLeaderboard(datosLeaderboard, tipoLeaderboard, funcionCallback) {
-  datosLeaderboard[tipoLeaderboard].forEach(
-    (registroLeaderboard) => {
-      crearFilaLeaderboard(registroLeaderboard);
+async function crearLeaderboard(leaderboard, funcionCallback) {
+  console.log('leaderboard:', leaderboard);
+  leaderboard.rankingJugadoresEnLeaderboard.forEach(
+    (jugadorEnLeaderboard) => {
+      crearFilaLeaderboard(jugadorEnLeaderboard);
     },
   );
 
@@ -170,17 +171,16 @@ function crearLeaderboard(datosLeaderboard, tipoLeaderboard, funcionCallback) {
   };
 }
 
-function crearTiposLeaderboard(
-  todosLosLeaderboards,
+async function crearTiposLeaderboard(
   leaderboardSeleccionadoPorDefecto,
   funcionCallback,
 ) {
   const $SELECTOR_TIPO_LEADERBOARD = document.querySelector('#tipo-leaderboard');
-  const arrayTiposLeaderboards = Object.keys(todosLosLeaderboards);
+  const listadoLeaderboards = await traerListadoLeaderboards();
 
-  for (let i = 0; i < arrayTiposLeaderboards.length; i++) {
+  for (let i = 0; i < listadoLeaderboards.length; i++) {
     const $opcionLeaderboard = document.createElement('option');
-    const tipoLeaderboard = arrayTiposLeaderboards[i];
+    const tipoLeaderboard = listadoLeaderboards[i];
 
     $opcionLeaderboard.value = tipoLeaderboard;
 
@@ -197,63 +197,63 @@ function crearTiposLeaderboard(
     limpiarHijosElementoHTML($CUERPO_TABLA);
     const opcionSeleccionada = $SELECTOR_TIPO_LEADERBOARD.value;
 
-    const leaderboardsConPuntaje = ['live_threecheck', 'live_crazyhouse', 'live_kingofthehill', 'tactics',
-      'rush',
-      'battle'];
-
-    if (leaderboardsConPuntaje.includes(opcionSeleccionada)) {
-      adaptarTablaALeaderboardsConPuntaje();
-    } else {
-      adaptarTablaALeaderboardsConRating();
+    async function actualizarTabla() {
+      const leaderboardAMostrar = await traerLeaderboard(opcionSeleccionada);
+      console.log('leaderboardAMostrar:', leaderboardAMostrar);
+      if (leaderboardAMostrar.esConPuntaje) {
+        adaptarTablaALeaderboardsConPuntaje();
+      } else {
+        adaptarTablaALeaderboardsConRating();
+      }
+      crearLeaderboard(leaderboardAMostrar, funcionCallback);
     }
-
-    crearLeaderboard(todosLosLeaderboards, opcionSeleccionada, funcionCallback);
+    actualizarTabla();
   };
 }
 
-function popularPerfil(datosJugador) {
-  if (datosJugador.name === undefined) {
-    $PERFIL_NOMBRE.textContent = datosJugador.username;
+function popularPerfil(Jugador) {
+  if (Jugador.nombre === undefined) {
+    $PERFIL_NOMBRE.textContent = Jugador.nombre;
   } else {
-    $PERFIL_NOMBRE.textContent = datosJugador.name;
+    $PERFIL_NOMBRE.textContent = Jugador.nombre;
   }
 
-  $PERFIL_USUARIO.textContent = `${datosJugador.username}`;
+  $PERFIL_USUARIO.textContent = `${Jugador.username}`;
 
   const badgeJugador = document.createElement('span');
 
-  if (datosJugador.title) {
+  if (Jugador.titulo) {
     badgeJugador.classList.add('badge', 'bg-warning', 'badge-sm');
-    badgeJugador.textContent = `${datosJugador.title}`;
+    badgeJugador.textContent = `${Jugador.titulo}`;
     badgeJugador.classList.add('m-2');
     $PERFIL_NOMBRE.prepend(badgeJugador);
-    $PERFIL_TITULO.textContent = `${TITULOS[datosJugador.title]} de Ajedrez`;
+    $PERFIL_TITULO.textContent = `${TITULOS[Jugador.titulo]} de Ajedrez`;
   } else {
     $PERFIL_TITULO.textContent = 'Jugador amateur (sin título)';
   }
 
-  const jugadorSeleccionado = document.querySelector(`#${datosJugador.username}`);
+  const jugadorSeleccionado = document.querySelector(`#${Jugador.username}`);
 
-  const rankJugador = jugadorSeleccionado.dataset.rank;
-  $PERFIL_NOMBRE.prepend(`#${rankJugador} -`);
+  const posicionJugador = jugadorSeleccionado.dataset.posicion;
+  $PERFIL_NOMBRE.prepend(`#${posicionJugador} -`);
 
-  const banderaJugador = crearBandera(datosJugador.country, BANDERAS_EXOTICAS);
+  const banderaJugador = crearBandera(Jugador.pais, BANDERAS_EXOTICAS);
   banderaJugador.classList.add('m-2', 'bandera-jugador');
 
   $PERFIL_NOMBRE.append(banderaJugador);
 
-  if (datosJugador.avatar === undefined) {
+  if (Jugador.imagenPerfil === undefined) {
     $PERFIL_IMAGEN.setAttribute('src', 'img/user-profile-img.svg');
   } else {
-    $PERFIL_IMAGEN.setAttribute('src', `${datosJugador.avatar}`);
+    $PERFIL_IMAGEN.setAttribute('src', `${Jugador.imagenPerfil}`);
   }
 
   $PERFIL_IMAGEN.classList.remove('d-none');
 
-  $PERFIL_ENLACE.setAttribute('href', `${datosJugador.url}`);
+  $PERFIL_ENLACE.setAttribute('href', `${Jugador.enlacePerfil}`);
   $PERFIL_ENLACE.textContent = 'Enlace de Chess.com';
 
-  $PERFIL_SEGUIDORES.textContent = `${datosJugador.followers} Seguidores`;
+  $PERFIL_SEGUIDORES.textContent = `${Jugador.seguidores} Seguidores`;
 }
 
 function obtenerJugadorSeleccionado() {
