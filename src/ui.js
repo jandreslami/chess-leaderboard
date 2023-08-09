@@ -149,7 +149,6 @@ function crearFilaLeaderboard(jugadorEnLeaderboard) {
 }
 
 async function crearLeaderboard(leaderboard, funcionCallback) {
-  console.log('leaderboard:', leaderboard);
   leaderboard.rankingJugadoresEnLeaderboard.forEach(
     (jugadorEnLeaderboard) => {
       crearFilaLeaderboard(jugadorEnLeaderboard);
@@ -199,7 +198,6 @@ async function crearTiposLeaderboard(
 
     async function actualizarTabla() {
       const leaderboardAMostrar = await traerLeaderboard(opcionSeleccionada);
-      console.log('leaderboardAMostrar:', leaderboardAMostrar);
       if (leaderboardAMostrar.esConPuntaje) {
         adaptarTablaALeaderboardsConPuntaje();
       } else {
@@ -213,7 +211,7 @@ async function crearTiposLeaderboard(
 
 function popularPerfil(jugador) {
   if (jugador.nombre === undefined) {
-    $PERFIL_NOMBRE.textContent = jugador.nombre;
+    $PERFIL_NOMBRE.textContent = jugador.username;
   } else {
     $PERFIL_NOMBRE.textContent = jugador.nombre;
   }

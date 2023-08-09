@@ -8,15 +8,15 @@ import mapearJugador from '../mapeadores/Jugador.js';
 import mapearLeaderboard from '../mapeadores/Leaderboard.js';
 
 export async function traerJugador(username) {
-  let jugador;
+  let jugador = await storage.traerJugador(username);
 
-  if (storage.traerJugador(username)) {
-    jugador = storage.traerJugador(username);
-  } else {
-    jugador = await api.traerDatosJugador(config.URL_PERFIL_JUGADOR, username);
-    mapearJugador(jugador);
-    storage.guardarDatos(username, jugador);
+  if (jugador != null) {
+    return jugador;
   }
+
+  let datosJugador = await api.traerDatosJugador(config.URL_PERFIL_JUGADOR, username);
+  jugador = mapearJugador(datosJugador);
+  storage.guardarDatos(username, jugador);
 
   return jugador;
 }
