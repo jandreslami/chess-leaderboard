@@ -7,7 +7,7 @@ class Leaderboard {
   }
 
   esConPuntaje() {
-    if ([this.rankingJugadoresEnLeaderboard][0].win_count === 0) {
+    if (this.rankingJugadoresEnLeaderboard[0].partidasGanadas === 0) {
       return true;
     } return false;
   }
