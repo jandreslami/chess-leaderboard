@@ -48,5 +48,4 @@ export async function traerListadoLeaderboards() {
     arrayListadoLeaderboards.push(key);
   }
   storage.guardarDatos('listadoLeaderboards', arrayListadoLeaderboards);
-  return listadoLeaderboards;
 }
