@@ -13,7 +13,7 @@ Descargar repositorio y hacer `npm run start` o ver [deploy en GH pages](https:/
 
 ### Modelo entidad-relacion
 
-![img](modelosEntidades\UMLEntidadesImg.png)
+![img](modelosEntidades/UMLEntidadesImg.png)
 
 ### Todo
 - [x] Cache con localstorage
