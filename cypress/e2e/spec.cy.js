@@ -46,7 +46,7 @@ context('Test Leaderboard', () => {
 
     it('Los perfiles se ven', () => {
       cy.get('@tabla')
-        .find('.nombre').get('[data-rank="3"]').as('jugador');
+        .find('.nombre').get('[data-posicion="3"]').as('jugador');
       cy.get('@jugador').click();
 
       cy.get('[data-cy="perfil"]').should('be.visible');
@@ -54,7 +54,7 @@ context('Test Leaderboard', () => {
 
     it('El nombre del perfil coincide con el de la tabla', () => {
       cy.get('@tabla')
-        .find('.nombre').get('[data-rank="3"]').as('jugador');
+        .find('.nombre').get('[data-posicion="3"]').as('jugador');
 
       cy.get('@jugador').invoke('text')
         .as('nombre-jugador');
