@@ -20,3 +20,6 @@ Descargar repositorio y hacer `npm run start` o ver [deploy en GH pages](https:/
 - [x] Testing con Cypress
 - [ ] Testing con Jest
 - [ ] Placeholders para evitar layout shift al cargar
+- [ ] Hacer que se llame una sola vez a la API y se carguen los datos
+- [ ] Manejar correctamente errores de los archivos incluidos en /servicios
+
