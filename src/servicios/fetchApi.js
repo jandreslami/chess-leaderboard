@@ -1,14 +1,21 @@
+/* eslint-disable consistent-return */
 /* eslint-disable no-console */
-export function traerLeaderboards(urlLeaderboards) {
-  return fetch(urlLeaderboards)
-    .then((datos) => datos.json())
-    .then((datos) => datos)
-    .catch((error) => console.error(error));
+export async function traerLeaderboards(urlLeaderboards) {
+  try {
+    const respuesta = await fetch(urlLeaderboards);
+    const datos = await respuesta.json();
+    return datos;
+  } catch (error) {
+    console.error(error);
+  }
 }
 
-export function traerDatosJugador(urlPerfilJugador, username = 'magnuscarlsen') {
-  return fetch(`${urlPerfilJugador}${username}`)
-    .then((datos) => datos.json())
-    .then((datos) => datos)
-    .catch((error) => console.error(error));
+export async function traerDatosJugador(urlPerfilJugador, username = 'magnuscarlsen') {
+  try {
+    const respuesta = await fetch(`${urlPerfilJugador}${username}`);
+    const datos = await respuesta.json();
+    return datos;
+  } catch (error) {
+    console.error(error);
+  }
 }
