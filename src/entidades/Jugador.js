@@ -10,11 +10,6 @@ class Jugador {
     imagenPerfil = undefined,
     enlacePerfil = undefined,
   ) {
-    // Singleton pattern comentado
-    // if (Jugador.instance) {
-    //   return Jugador.instance;
-    // }
-
     this.username = username;
     this.nombre = nombre;
     this.titulo = titulo;
@@ -22,7 +17,6 @@ class Jugador {
     this.seguidores = seguidores;
     this.imagenPerfil = imagenPerfil;
     this.enlacePerfil = enlacePerfil;
-    // Jugador.instance = this;
   }
 }
 
