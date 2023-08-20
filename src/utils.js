@@ -11,6 +11,7 @@ function crearBandera(paisJugador, banderasExoticas) {
 
   const $bandera = document.createElement('span');
   $bandera.classList.add('fi', `fi-${paisDefinitivoJugador}`);
+  $bandera.style.paddingBottom = '3px';
   return $bandera;
 }
 
