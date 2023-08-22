@@ -63,6 +63,23 @@ context('Test Leaderboard', () => {
 
       cy.get('[data-cy="nombre-perfil"]').should('contain.text', 'Hikaru Nakamura');
     });
+
+    it('El enlace al perfil de Chess.com funciona', () => {
+      cy.get('@tabla')
+        .find('.nombre').get('[data-posicion="3"]').as('jugador');
+      cy.get('@jugador').click();
+      cy.get('[data-cy="enlace-perfil"]').should('be.visible');
+      cy.get('[data-cy="enlace-perfil"]').should('have.attr', 'href');
+      cy.get('[data-cy="enlace-perfil"]').invoke('attr', 'href').as('enlace');
+      cy.get('@enlace').then((enlace) => cy.log(`${enlace}`));
+      cy.get('@enlace').should('not.be.undefined').should('not.be.NaN').should('not.be.null');
+      cy.get('@enlace').should(
+        (enlace) => {
+          const regex = /https:\/\/www\.chess\.com\/member\//;
+          expect(enlace).to.match(regex);
+        },
+      );
+    });
   });
 });
 
