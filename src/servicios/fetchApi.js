@@ -3,17 +3,17 @@
 export async function traerLeaderboards(urlLeaderboards) {
   try {
     const respuesta = await fetch(urlLeaderboards);
-    const datos = await respuesta.json();
+    const datos = respuesta.json();
     return datos;
   } catch (error) {
     console.error(error);
   }
 }
 
-export async function traerDatosJugador(urlPerfilJugador, username = 'magnuscarlsen') {
+export async function traerDatosJugador(urlPerfilJugador, username) {
   try {
     const respuesta = await fetch(`${urlPerfilJugador}${username}`);
-    const datos = await respuesta.json();
+    const datos = respuesta.json();
     return datos;
   } catch (error) {
     console.error(error);
