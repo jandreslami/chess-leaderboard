@@ -1,8 +1,9 @@
 # chess-leaderboard
- simple leaderboard consumiendo la API de Chess.com
+ simple leaderboard consumiendo la [API de Chess.com](https://www.chess.com/news/view/published-data-api)
 
-[Enlace a la documentación de la API](https://www.chess.com/news/view/published-data-api)
-
+ Techs used:
+- Vanilla JS
+- Cypress / Jest
 
 ### Instrucciones
 Descargar repositorio y hacer `npm run start` o ver [deploy en GH pages](https://jandreslami.github.io/chess-leaderboard/)
